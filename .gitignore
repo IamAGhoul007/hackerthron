@@ -1,0 +1,13 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+data/chroma/
+data/cache/
+data/logs/
+.pytest_cache/
+
+# Explicitly ensure jira dump is uploaded to GitHub
+!data/jira/
+!data/jira/jira_tickets_dump.txt

@@ -1,0 +1,4 @@
+roles:
+  - EMPLOYEE
+  - APPROVER
+  - ADMIN

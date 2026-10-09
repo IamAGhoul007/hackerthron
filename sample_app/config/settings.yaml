@@ -1,0 +1,8 @@
+app_name: "NimbusPay"
+version: "3.5.0"
+default_currency: "USD"
+mileage_rate_per_km: 0.55
+max_mileage_km_per_claim: 500
+session_timeout_minutes: 20
+draft_expiry_days: 14
+max_export_rows: 10000

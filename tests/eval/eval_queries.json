@@ -1,0 +1,27 @@
+[
+    {
+        "query": "bulk upload keeps failing with 15mb file, says error UPL-413",
+        "expected_route": "jira+code",
+        "expected_keywords": ["10MB", "50MB", "support"]
+    },
+    {
+        "query": "how do I turn on dark mode?",
+        "expected_route": "jira",
+        "expected_keywords": ["Profile", "Appearance"]
+    },
+    {
+        "query": "session logged me out",
+        "expected_route": "code",
+        "expected_keywords": ["20", "minutes"]
+    },
+    {
+        "query": "I need to change the source code for the expense limit",
+        "expected_route": "refused",
+        "expected_keywords": ["cannot modify code"]
+    },
+    {
+        "query": "how to book a flight to mars",
+        "expected_route": "not_found",
+        "expected_keywords": ["couldn't find"]
+    }
+]
