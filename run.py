@@ -7,17 +7,22 @@ from pathlib import Path
 import time
 import socket
 
+PROJECT_ROOT = Path(__file__).resolve().parent
+
 def is_port_in_use(port: int) -> bool:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         return s.connect_ex(('127.0.0.1', port)) == 0
 
 def check_python_version():
     if sys.version_info < (3, 11):
-        print("\033[91mError: Python 3.11+ is required.\033[0m")
+        print("\033[91mError: Python 3.11-3.13 is required.\033[0m")
+        sys.exit(1)
+    if sys.version_info >= (3, 14):
+        print("\033[91mError: Python 3.11-3.13 is required; Python 3.14 is not supported yet.\033[0m")
         sys.exit(1)
 
 def setup_venv():
-    venv_dir = Path("venv")
+    venv_dir = PROJECT_ROOT / "venv"
     if not venv_dir.exists():
         print("Creating virtual environment...")
         venv.create(venv_dir, with_pip=True)
@@ -53,6 +58,9 @@ def install_deps():
 
 def setup_env():
     if not os.path.exists(".env"):
+        if not os.path.exists(".env.example"):
+            print("\033[91mError: .env.example is missing from the project root.\033[0m")
+            sys.exit(1)
         print("Creating .env from .env.example...")
         shutil.copy(".env.example", ".env")
         print("\033[93mPlease configure API keys in .env\033[0m")
@@ -63,6 +71,7 @@ def ensure_dirs():
         os.makedirs(d, exist_ok=True)
 
 def run():
+    os.chdir(PROJECT_ROOT)
     check_python_version()
     setup_venv()
     
