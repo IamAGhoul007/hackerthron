@@ -1773,3 +1773,118 @@ Known Issues / Workarounds:
 None.
 User Impact:
 Faster load times.
+
+================================================================================
+Key: BUG-9999
+Type: Bug
+Summary: Out of warranty bug in the old widget
+Status: Done
+Priority: High
+Fix Version: 1.0.0
+Release Date: 2026-01-01
+Components: OldWidget
+Labels: bug
+Reporter: TestUser
+Assignee: DevTeam
+Description:
+The old widget is crashing when users click the back button.
+Acceptance Criteria:
+- It should not crash.
+Comments:
+None
+Known Issues / Workarounds:
+None
+User Impact:
+Users experience crashes.
+
+================================================================================
+Key: BUG-10000
+Type: Bug
+Summary: In warranty bug regarding data sync
+Status: Done
+Priority: High
+Fix Version: 4.1.0
+Release Date: 2026-09-01
+Components: DataSync
+Labels: bug
+Reporter: QA
+Assignee: DevTeam
+Description:
+Data synchronization fails silently when offline mode is toggled rapidly.
+Acceptance Criteria:
+- Show an error dialog or recover cleanly.
+Comments:
+None
+Known Issues / Workarounds:
+None
+User Impact:
+Users might lose unsynced data.
+
+================================================================================
+Key: FEAT-10001
+Type: Story
+Summary: In warranty feature request for biometric login
+Status: Done
+Priority: Medium
+Fix Version: 4.2.0
+Release Date: 2026-09-10
+Components: Auth
+Labels: feature
+Reporter: PM
+Assignee: DevTeam
+Description:
+Users want to log in using FaceID/TouchID.
+Acceptance Criteria:
+- Add a biometric login toggle.
+Comments:
+None
+Known Issues / Workarounds:
+None
+User Impact:
+Faster login experience.
+
+================================================================================
+Key: BUG-10002
+Type: Bug
+Summary: Out of warranty bug in the payment gateway
+Status: Done
+Priority: Critical
+Fix Version: 1.1.0
+Release Date: 2026-02-01
+Components: Payments
+Labels: bug
+Reporter: Finance
+Assignee: DevTeam
+Description:
+The old payment gateway sometimes double charges on slow networks.
+Acceptance Criteria:
+- Add idempotency keys to the request.
+Comments:
+None
+Known Issues / Workarounds:
+None
+User Impact:
+Users get double charged.
+
+================================================================================
+Key: FEAT-10003
+Type: Story
+Summary: Out of warranty feature for legacy PDF export
+Status: Done
+Priority: Low
+Fix Version: 1.2.0
+Release Date: 2026-03-01
+Components: Export
+Labels: feature
+Reporter: Users
+Assignee: DevTeam
+Description:
+Need the ability to export the legacy dashboard to a PDF.
+Acceptance Criteria:
+- Add a PDF export button.
+Comments:
+None
+Known Issues / Workarounds:
+None
+User Impact:
+Users can share reports easily.

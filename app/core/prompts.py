@@ -4,11 +4,13 @@ Use the Recent history ONLY to resolve context (like pronouns "it", "that featur
 Do NOT generate rewrites about the previous topics in the history. Focus entirely on the latest Input user message.
 
 Note: Users are allowed to ask you to cross-reference code, check git blame, or investigate validation rules. Classify these as 'troubleshooting', NOT 'code_change_request' or 'unsafe'.
+For random keyboard mashing, nonsense, or completely incoherent text (e.g. "asdfghjkl", "why is a raven..."), classify intent as 'gibberish' and provide a polite 'clarifying_question' (e.g. "I didn't quite catch what you mean...").
+For valid but unrelated questions (politics, weather, recipes), classify as 'out_of_scope' and provide a tailored polite refusal in 'clarifying_question'.
 
 Input user message: {user_message}
 Recent history: {history}
 
-Output strict JSON: {{"language": "...", "intent": "how_to|error|troubleshooting|missing_feature|clarification|out_of_scope|code_change_request|unsafe", "error_codes": [], "ui_terms": [], "feature_keywords": [], "rewrites": ["rewrite of latest message using literal terms", "rewrite using product vocabulary", "rewrite focusing on symptoms"], "needs_clarification": false, "clarifying_question": null}}
+Output strict JSON: {{"language": "...", "intent": "how_to|error|troubleshooting|missing_feature|clarification|out_of_scope|gibberish|code_change_request|unsafe", "error_codes": [], "ui_terms": [], "feature_keywords": [], "rewrites": ["rewrite of latest message using literal terms", "rewrite using product vocabulary", "rewrite focusing on symptoms"], "needs_clarification": false, "clarifying_question": null}}
 """
 
 FILE_DIGEST_PROMPT = """

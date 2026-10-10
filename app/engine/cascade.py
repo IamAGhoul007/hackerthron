@@ -1,5 +1,6 @@
 import os
 import time
+from datetime import datetime
 from typing import Dict, Any
 
 from app.core.schemas import ChatResponse, Source, MismatchDetail
@@ -29,10 +30,12 @@ class CascadeOrchestrator:
 
         qu_result = self.query_understanding.understand(message, history)
         
-        if qu_result.get("intent") in ["out_of_scope"]:
+        intent = qu_result.get("intent")
+        if intent in ["out_of_scope", "gibberish"]:
+            fallback_msg = "I didn't quite catch what you mean." if intent == "gibberish" else "I am a read-only guide and cannot answer questions outside the scope of this project."
+            msg = qu_result.get("clarifying_question") or fallback_msg
             return self._build_response(session_id, request_id, start_time,
-                                        "I am a read-only guide and cannot answer questions outside the scope of this project.",
-                                        "refused", 1.0, [], MismatchDetail(detected=False))
+                                        msg, "refused", 1.0, [], MismatchDetail(detected=False))
                                         
         if qu_result.get("needs_clarification"):
             return self._build_response(session_id, request_id, start_time,
@@ -59,6 +62,26 @@ class CascadeOrchestrator:
             sources = self._format_sources(jira_results[:top_k_context], "jira")
             context = "\n".join([r['document'] for r in jira_results[:top_k_context]])
             
+            # Warranty Check
+            intent = qu_result.get("intent")
+            warranty_msg = ""
+            if intent in ["code_change_request", "error", "troubleshooting", "missing_feature"]:
+                latest_date = None
+                if jira_results:
+                    rd_str = jira_results[0]['metadata'].get('release_date')
+                    if rd_str:
+                        try:
+                            latest_date = datetime.strptime(rd_str, "%Y-%m-%d")
+                        except ValueError:
+                            pass
+                            
+                if latest_date:
+                    gap = (datetime.now() - latest_date).days
+                    if gap <= 90:
+                        warranty_msg = "\n\n**Warranty Status**: This issue is in warranty. Please contact the dev team of the app."
+                    else:
+                        warranty_msg = "\n\n**Warranty Status**: This issue is out of warranty. Please contact the internal team asking them to look into the bugs / code changes."
+            
             if os.getenv("ENABLE_CROSS_CHECK", "true").lower() == "true":
                 code_results = self.code_retriever.search(queries, top_k=top_k_context)
                 cc_res = self.cross_check.compare(jira_results[:top_k_context], code_results)
@@ -69,6 +92,8 @@ class CascadeOrchestrator:
                     escalation_note = self.answer_composer.compose_escalation(message, context + str(cc_res))
             
             final_answer = self.answer_composer.compose(message, context, "jira")
+            if warranty_msg:
+                final_answer += warranty_msg
             
         else:
             # Code Retrieval

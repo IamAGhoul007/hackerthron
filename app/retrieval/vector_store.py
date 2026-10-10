@@ -6,12 +6,15 @@ from app.core.embeddings import get_embedding_client
 class VectorStore:
     def __init__(self, collection_name: str):
         self.chroma_client = chromadb.PersistentClient(path=os.getenv("CHROMA_DIR", "./data/chroma"))
-        self.collection = self.chroma_client.get_or_create_collection(name=collection_name)
+        self.collection_name = collection_name
+        self.chroma_client.get_or_create_collection(name=collection_name)
         self.embedding_client = get_embedding_client()
 
     def search(self, query: str, top_k: int = 10) -> List[Dict]:
         query_embedding = self.embedding_client.embed_query(query)
-        results = self.collection.query(
+        # Index rebuilds replace collections after the retriever is constructed.
+        collection = self.chroma_client.get_collection(name=self.collection_name)
+        results = collection.query(
             query_embeddings=[query_embedding],
             n_results=top_k
         )
