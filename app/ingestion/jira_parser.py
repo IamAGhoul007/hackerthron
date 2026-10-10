@@ -17,6 +17,7 @@ class Ticket:
     comments: str
     known_issues: str
     user_impact: str
+    release_date: str
     
     @property
     def is_released(self) -> bool:
@@ -60,6 +61,7 @@ class JiraParser:
                     status=self._extract_field(rt, "Status").split("\n")[0],
                     priority=self._extract_field(rt, "Priority").split("\n")[0],
                     fix_version=self._extract_field(rt, "Fix Version").split("\n")[0],
+                    release_date=self._extract_field(rt, "Release Date").split("\n")[0],
                     components=self._extract_field(rt, "Components").split("\n")[0],
                     labels=self._extract_field(rt, "Labels").split("\n")[0],
                     description=self._extract_field(rt, "Description"),
@@ -85,6 +87,7 @@ class JiraParser:
                 "components": t.components,
                 "labels": t.labels,
                 "released": t.is_released,
+                "release_date": t.release_date,
                 "source_type": "jira"
             }
             
